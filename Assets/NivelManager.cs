@@ -5,8 +5,8 @@ using TMPro;
 
 /// <summary>
 /// Va en un GameObject vacío. Activa solo el nivel actual, avisa cuando se completa
-/// y recarga la escena con el nivel siguiente (así el autoelevador y la física
-/// arrancan siempre limpios).
+/// cada pallet y el nivel entero, y recarga la escena con el nivel siguiente
+/// (así el autoelevador y la física arrancan siempre limpios).
 /// </summary>
 public class NivelManager : MonoBehaviour
 {
@@ -24,6 +24,8 @@ public class NivelManager : MonoBehaviour
 
     NivelObjetivo activo;
     bool cambiando;
+    int cargasMostradas;
+    float mensajeHasta;
 
     // Por si el editor tiene desactivado el "Reload Domain": cada Play arranca en el nivel 1.
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
@@ -44,7 +46,7 @@ public class NivelManager : MonoBehaviour
 
     void Start()
     {
-        txtNivel.text = $"Nivel {nivelActual + 1} / {niveles.Length}";
+        ActualizarTitulo();
         txtMensaje.text = "";
     }
 
@@ -53,11 +55,36 @@ public class NivelManager : MonoBehaviour
         if (cambiando) return;
 
         if (activo.Completado)
+        {
             StartCoroutine(CompletarNivel());
-        else if (activo.Progreso > 0f)
-            txtMensaje.text = $"¡Mantenelo arriba! {activo.Progreso * 100f:F0}%";
-        else
-            txtMensaje.text = "";
+            return;
+        }
+
+        // Se completó un pallet (pero faltan otros): cartel por unos segundos.
+        if (activo.CargasListas > cargasMostradas)
+        {
+            cargasMostradas = activo.CargasListas;
+            ActualizarTitulo();
+            mensajeHasta = Time.time + 3f;
+            txtMensaje.text = $"¡Pallet {cargasMostradas} de {activo.TotalCargas} listo! Ahora el siguiente";
+            return;
+        }
+
+        if (Time.time < mensajeHasta) return;
+
+        txtMensaje.text = activo.Progreso > 0f
+            ? $"¡Mantenelo arriba! {activo.Progreso * 100f:F0}%"
+            : "";
+    }
+
+    void ActualizarTitulo()
+    {
+        string titulo = $"Nivel {nivelActual + 1} / {niveles.Length}";
+
+        if (activo.TotalCargas > 1)
+            titulo += $"   Pallets {activo.CargasListas} / {activo.TotalCargas}";
+
+        txtNivel.text = titulo;
     }
 
     IEnumerator CompletarNivel()
