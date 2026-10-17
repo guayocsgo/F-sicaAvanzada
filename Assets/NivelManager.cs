@@ -19,6 +19,11 @@ public class NivelManager : MonoBehaviour
     [Tooltip("Segundos que se muestra el cartel antes de pasar de nivel.")]
     public float esperaAntesDeCambiar = 3f;
 
+    [Header("Sonidos")]
+    public AudioSource fuenteEfectos;
+    public AudioClip sonidoCargaCompletada;
+    public AudioClip sonidoNivelCompletado;
+
     // static: se conserva cuando se recarga la escena.
     static int nivelActual;
 
@@ -67,6 +72,7 @@ public class NivelManager : MonoBehaviour
             ActualizarTitulo();
             mensajeHasta = Time.time + 3f;
             txtMensaje.text = $"¡Pallet {cargasMostradas} de {activo.TotalCargas} listo! Ahora el siguiente";
+            Sonar(sonidoCargaCompletada);
             return;
         }
 
@@ -95,11 +101,18 @@ public class NivelManager : MonoBehaviour
         txtMensaje.text = hayMasNiveles
             ? $"¡Nivel {nivelActual + 1} completado!"
             : "¡Completaste todos los niveles!";
+        Sonar(sonidoNivelCompletado);
 
         yield return new WaitForSeconds(esperaAntesDeCambiar);
 
         nivelActual = hayMasNiveles ? nivelActual + 1 : 0;
         RecargarEscena();
+    }
+
+    void Sonar(AudioClip clip)
+    {
+        if (fuenteEfectos != null && clip != null)
+            fuenteEfectos.PlayOneShot(clip);
     }
 
     /// <summary>Botón: reinicia el nivel actual.</summary>
