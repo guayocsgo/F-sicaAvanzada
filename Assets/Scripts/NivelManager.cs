@@ -24,6 +24,10 @@ public class NivelManager : MonoBehaviour
     public AudioClip sonidoCargaCompletada;
     public AudioClip sonidoNivelCompletado;
 
+    [Header("Final del juego")]
+    [Tooltip("Pantalla que se muestra al completar el último nivel. Si está vacía, el juego vuelve al nivel 1.")]
+    public PantallaVictoria pantallaVictoria;
+
     // static: se conserva cuando se recarga la escena.
     static int nivelActual;
 
@@ -105,6 +109,12 @@ public class NivelManager : MonoBehaviour
 
         yield return new WaitForSeconds(esperaAntesDeCambiar);
 
+        if (!hayMasNiveles && pantallaVictoria != null)
+        {
+            pantallaVictoria.Mostrar();
+            yield break;
+        }
+
         nivelActual = hayMasNiveles ? nivelActual + 1 : 0;
         RecargarEscena();
     }
@@ -126,6 +136,12 @@ public class NivelManager : MonoBehaviour
     {
         nivelActual = 0;
         RecargarEscena();
+    }
+
+    /// <summary>La usa la pantalla final: el próximo Empezar arranca en el nivel 1.</summary>
+    public static void ReiniciarProgreso()
+    {
+        nivelActual = 0;
     }
 
     static void RecargarEscena()
