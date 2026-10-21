@@ -1,21 +1,17 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-/// <summary>
-/// Va en el GameObject raíz de cada nivel (Nivel1, Nivel2...).
-/// Cada pallet cuenta cuando llega a la altura meta con todas sus cajas encima y se
-/// mantiene ahí un tiempo. El nivel se completa cuando todos los pallets están listos.
-/// </summary>
+
 public class NivelObjetivo : MonoBehaviour
 {
-    /// <summary>Un pallet con sus cajas.</summary>
+    
     [System.Serializable]
     public class Carga
     {
         public Rigidbody pallet;
         public Rigidbody[] cajas;
 
-        // Estado de juego: no se guarda en la escena.
+        
         [System.NonSerialized] public bool lista;
         [System.NonSerialized] public float acumulado;
     }
@@ -42,10 +38,10 @@ public class NivelObjetivo : MonoBehaviour
 
     public bool Completado { get; private set; }
 
-    /// <summary>De 0 a 1: avance del pallet que se está subiendo en este momento.</summary>
+    
     public float Progreso { get; private set; }
 
-    /// <summary>Cantidad de pallets ya logrados.</summary>
+    
     public int CargasListas { get; private set; }
 
     public int TotalCargas => 1 + (cargasAdicionales != null ? cargasAdicionales.Length : 0);
@@ -73,7 +69,7 @@ public class NivelObjetivo : MonoBehaviour
             if (c.lista) CargasListas++;
             else Progreso = Mathf.Max(Progreso, Mathf.Clamp01(c.acumulado / tiempoSostenido));
 
-            // En orden: solo cuenta el primer pallet que todavía falta.
+            
             if (enOrden) break;
         }
 
@@ -93,7 +89,7 @@ public class NivelObjetivo : MonoBehaviour
             c.lista = true;
     }
 
-    // Todas las cajas tienen que seguir arriba del pallet y cerca de su centro.
+    
     bool CajasSobrePallet(Carga c)
     {
         if (c.cajas == null) return true;

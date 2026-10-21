@@ -4,11 +4,7 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using TMPro;
 
-/// <summary>
-/// Va en un GameObject vacío de la escena del juego. Arma por código la pantalla final
-/// (fondo oscuro, cartel "GANASTE" y botón "Volver al menú"), así que no hay que
-/// crear nada a mano en el Canvas. El NivelManager la muestra al completar el último nivel.
-/// </summary>
+
 public class PantallaVictoria : MonoBehaviour
 {
     [Header("Textos")]
@@ -29,7 +25,7 @@ public class PantallaVictoria : MonoBehaviour
     GameObject panel;
     RectTransform rtTitulo;
 
-    /// <summary>La llama el NivelManager al terminar el último nivel.</summary>
+    
     public void Mostrar()
     {
         if (panel == null) Construir();
@@ -41,7 +37,7 @@ public class PantallaVictoria : MonoBehaviour
 
     void Construir()
     {
-        // Canvas propio, por encima del resto de la UI.
+        
         panel = new GameObject("PantallaVictoriaCanvas", typeof(RectTransform));
         panel.transform.SetParent(transform, false);
 
@@ -56,7 +52,7 @@ public class PantallaVictoria : MonoBehaviour
 
         panel.AddComponent<GraphicRaycaster>();
 
-        // Fondo oscuro a pantalla completa (también bloquea los clics a la UI de atrás).
+        
         GameObject fondo = new GameObject("Fondo", typeof(RectTransform), typeof(Image));
         fondo.transform.SetParent(panel.transform, false);
         RectTransform rf = (RectTransform)fondo.transform;
@@ -66,7 +62,7 @@ public class PantallaVictoria : MonoBehaviour
         rf.offsetMax = Vector2.zero;
         fondo.GetComponent<Image>().color = colorFondo;
 
-        // Cartel y subtítulo.
+        
         TextMeshProUGUI txtTitulo = CrearTexto(panel.transform, "Titulo", titulo, 220f,
             colorTitulo, new Vector2(0f, 160f), new Vector2(1600f, 280f));
         rtTitulo = txtTitulo.rectTransform;
@@ -74,7 +70,7 @@ public class PantallaVictoria : MonoBehaviour
         CrearTexto(panel.transform, "Subtitulo", subtitulo, 56f,
             Color.white, new Vector2(0f, -40f), new Vector2(1400f, 100f));
 
-        // Botón.
+        
         GameObject boton = new GameObject("BtnVolverAlMenu", typeof(RectTransform), typeof(Image), typeof(Button));
         boton.transform.SetParent(panel.transform, false);
 
@@ -120,7 +116,7 @@ public class PantallaVictoria : MonoBehaviour
         return t;
     }
 
-    // El cartel entra "con efecto": crece y pasa un poquito de largo antes de asentarse.
+   
     IEnumerator AnimarTitulo()
     {
         const float duracion = 0.6f;
@@ -144,7 +140,7 @@ public class PantallaVictoria : MonoBehaviour
 
     void VolverAlMenu()
     {
-        NivelManager.ReiniciarProgreso(); // el próximo "Empezar" arranca otra vez en el nivel 1
+        NivelManager.ReiniciarProgreso(); 
         SceneManager.LoadScene(escenaMenu);
     }
 }

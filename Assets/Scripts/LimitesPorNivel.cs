@@ -1,11 +1,7 @@
 using UnityEngine;
 
-/// <summary>
-/// Va en el GameObject raíz de un nivel (por ejemplo, el último).
-/// Como solo el nivel activo ejecuta Start, los cambios valen únicamente en ese nivel:
-/// al recargar la escena con otro nivel, el autoelevador vuelve a sus valores normales.
-/// </summary>
-[DefaultExecutionOrder(-50)] // corre antes que AutoelevadorUI, para que el slider tome el rango nuevo
+
+[DefaultExecutionOrder(-50)] 
 public class LimitesPorNivel : MonoBehaviour
 {
     [Header("Elevación")]
@@ -30,7 +26,7 @@ public class LimitesPorNivel : MonoBehaviour
 
     void Start()
     {
-        // Los drives son structs: copiar, modificar y reasignar.
+        
         ArticulationDrive d = carro.yDrive;
         d.upperLimit = limiteElevacion;
         carro.yDrive = d;

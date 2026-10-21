@@ -1,10 +1,7 @@
 using UnityEngine;
 using TMPro;
 
-/// <summary>
-/// Va en un GameObject vacío. Alterna entre las cámaras de la lista
-/// (deja activa solo una a la vez) y actualiza el texto del botón.
-/// </summary>
+
 public class CamaraSelector : MonoBehaviour
 {
     [Tooltip("Cámaras en el orden en que se alternan. La primera es la que se ve al empezar.")]
@@ -20,7 +17,7 @@ public class CamaraSelector : MonoBehaviour
         Activar(0);
     }
 
-    /// <summary>Para el botón: pasa a la cámara siguiente.</summary>
+   
     public void SiguienteCamara()
     {
         if (camaras == null || camaras.Length == 0) return;

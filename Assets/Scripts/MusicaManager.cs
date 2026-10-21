@@ -1,11 +1,7 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-/// <summary>
-/// Va en un GameObject con un AudioSource. Ponelo en la escena del menú Y en la del juego:
-/// la copia que llega primero sobrevive entre escenas y la otra se destruye sola.
-/// Elige la música según la escena y no la reinicia cuando se recarga el nivel.
-/// </summary>
+
 [RequireComponent(typeof(AudioSource))]
 public class MusicaManager : MonoBehaviour
 {
@@ -24,7 +20,7 @@ public class MusicaManager : MonoBehaviour
 
     void Awake()
     {
-        // Si ya existe una (viene de la escena anterior), esta copia sobra.
+        
         if (instancia != null)
         {
             Destroy(gameObject);
@@ -65,7 +61,7 @@ public class MusicaManager : MonoBehaviour
 
     void Reproducir(AudioClip clip)
     {
-        // Misma pista que ya está sonando (por ejemplo, al pasar de nivel): no la reinicia.
+       
         if (clip == null || (fuente.clip == clip && fuente.isPlaying)) return;
 
         fuente.clip = clip;

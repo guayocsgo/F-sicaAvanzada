@@ -3,11 +3,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using TMPro;
 
-/// <summary>
-/// Va en un GameObject vacío. Activa solo el nivel actual, avisa cuando se completa
-/// cada pallet y el nivel entero, y recarga la escena con el nivel siguiente
-/// (así el autoelevador y la física arrancan siempre limpios).
-/// </summary>
+
 public class NivelManager : MonoBehaviour
 {
     [Tooltip("Un elemento por nivel: el GameObject raíz que tiene NivelObjetivo.")]
@@ -28,7 +24,7 @@ public class NivelManager : MonoBehaviour
     [Tooltip("Pantalla que se muestra al completar el último nivel. Si está vacía, el juego vuelve al nivel 1.")]
     public PantallaVictoria pantallaVictoria;
 
-    // static: se conserva cuando se recarga la escena.
+    
     static int nivelActual;
 
     NivelObjetivo activo;
@@ -36,7 +32,7 @@ public class NivelManager : MonoBehaviour
     int cargasMostradas;
     float mensajeHasta;
 
-    // Por si el editor tiene desactivado el "Reload Domain": cada Play arranca en el nivel 1.
+   
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
     static void ReiniciarEstatico()
     {
@@ -69,7 +65,7 @@ public class NivelManager : MonoBehaviour
             return;
         }
 
-        // Se completó un pallet (pero faltan otros): cartel por unos segundos.
+       
         if (activo.CargasListas > cargasMostradas)
         {
             cargasMostradas = activo.CargasListas;
@@ -125,20 +121,20 @@ public class NivelManager : MonoBehaviour
             fuenteEfectos.PlayOneShot(clip);
     }
 
-    /// <summary>Botón: reinicia el nivel actual.</summary>
+    
     public void ReiniciarNivel()
     {
         RecargarEscena();
     }
 
-    /// <summary>Botón: vuelve al nivel 1.</summary>
+    
     public void VolverAlPrimerNivel()
     {
         nivelActual = 0;
         RecargarEscena();
     }
 
-    /// <summary>La usa la pantalla final: el próximo Empezar arranca en el nivel 1.</summary>
+    
     public static void ReiniciarProgreso()
     {
         nivelActual = 0;
